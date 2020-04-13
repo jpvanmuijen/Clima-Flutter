@@ -7,25 +7,24 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  // Lesson 152: call getLocation from initState
+  void initState() {
+    super.initState();
+    getLocation();
+  }
+
   // Lesson 150: Add async to the method
   // Only high accuracy works, Android manifest needs both coarse and fine permissions
   void getLocation() async {
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    print(position);    
+    print(position);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            getLocation();
-          },
-          child: Text('Get Location'),
-        ),
-      ),
+      body: Text(''),
     );
   }
 }
