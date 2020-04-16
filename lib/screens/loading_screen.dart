@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './location_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:clima/services/weather.dart';
+import 'dart:async';
+import 'error_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -20,12 +22,25 @@ class _LoadingScreenState extends State<LoadingScreen> {
     // Create new WeahterModel here and get the locationWeather (using await, because it can return data at any time)
     WeatherModel weatherModel = WeatherModel();
     var weatherData = await weatherModel.getLocationWeather();
-    // Lesson 159: When all is finished, move to the next screen, and pass on the weatherData to it
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return LocationScreen(weatherData);
     }));
-
-    // Lesson 158: moved variables gotten from weaterData to location_screen.dart, to tidy up the loading screen
+    /*
+    try {
+      var weatherData = await Future.value(weatherModel.getLocationWeather())
+          .timeout(const Duration(seconds: 3));
+      // Lesson 159: When all is finished, move to the next screen, and pass on the weatherData to it
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return LocationScreen(weatherData);
+      })); 
+      // Lesson 158: moved variables gotten from weaterData to location_screen.dart, to tidy up the loading screen
+    } on TimeoutException catch (e) {
+      print(e);
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return ErrorScreen();
+      }));
+    }
+    */
   }
 
   // Lesson 153: catch exceptions
