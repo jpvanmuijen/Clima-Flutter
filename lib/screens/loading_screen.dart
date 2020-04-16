@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import '../services/location.dart';
-import '../services/networking.dart';
 import './location_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-const apiKey = '6d3a717320d3d4ded3be9c990f9d94a6';
+import 'package:clima/services/weather.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -12,9 +9,6 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  // Lesson 158: create variables on State level to store lat & lon
-  double latValue;
-  double lonValue;
   // Lesson 152: call getLocation from initState
   void initState() {
     super.initState();
@@ -22,26 +16,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void getLocationData() async {
-    // Lesson 154: moved getLocation contents to location.dart
-    Location userLocation = Location();
-    // Lesson 154: in order to wait for the location, we need the class to return a Future
-    await userLocation.getCurrentLocation();
-    // After it is finished, we can print the values returned
-    // print(userLocation.lat);
-    // print(userLocation.lon);
-    // Lesson 158: set lat & lon values
-    latValue = userLocation.lat;
-    lonValue = userLocation.lon;
-    // http://api.openweathermap.org/data/2.5/weather?lat=37.4219983&lon=-122.084&appid=6d3a717320d3d4ded3be9c990f9d94a6&units=metric
-    // Lesson 158: Call getData after await userlocation, to prevent empty lat & lon values
-    // getData();
-    // Lesson 158: combine getLocation and getData in a networkHelper
-    NetworkHelper networkHelper = NetworkHelper(
-        'http://api.openweathermap.org/data/2.5/weather?lat=$latValue&lon=$lonValue&appid=$apiKey&units=metric');
-
-    // Lesson 158: get weatherData from NetworkHelper using its getData method
-    var weatherData = await networkHelper.getData();
-
+    // Lesson 162: moved getWeather to weather.dart
+    // Create new WeahterModel here and get the locationWeather (using await, because it can return data at any time)
+    WeatherModel weatherModel = WeatherModel();
+    var weatherData = await weatherModel.getLocationWeather();
     // Lesson 159: When all is finished, move to the next screen, and pass on the weatherData to it
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return LocationScreen(weatherData);
