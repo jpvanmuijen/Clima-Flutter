@@ -23,6 +23,6 @@ class Location {
       // If it fails, print the error or a default String
       print(e);
     }
-  }  
+  }
 }
 
